@@ -1,0 +1,17 @@
+﻿<Window x:Class="YoutubeAudioDownloader.NewVideoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:YoutubeAudioDownloader"
+        mc:Ignorable="d"
+        Activated="Window_Activated"
+        Background="#FF01001F"
+        Title="Добавить" Height="360" Width="480">
+    <Grid>
+        <Image Source="{Binding Path=CurrentVideo.Thumbnail}"/>
+        <TextBox Text="{Binding Path=CurrentVideo.Url, UpdateSourceTrigger=PropertyChanged}" Margin="10,10,10,0" Height="23" VerticalAlignment="Top"/>
+        <TextBlock Text="{Binding Path=CurrentVideo.Video.Title}" FontSize="20" Margin="10,40,10,0" Foreground="White" Height="30" VerticalAlignment="Top"/>
+        <Button Content="OK" Command="{Binding Path=OKCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Height="25" Width="75"/>
+    </Grid>
+</Window>
