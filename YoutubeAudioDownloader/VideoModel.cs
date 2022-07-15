@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;//
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using VideoLibrary;
@@ -14,12 +15,20 @@ namespace YoutubeAudioDownloader
 {
     public class VideoModel : INotifyPropertyChanged
     {
-        public static Regex VideoRegex = new Regex(@"https:\/\/www\.youtube\.com\/watch\?v=([^&]+)");
+        public static Regex VideoRegex = new Regex(@"https:\/\/.*(?:youtu|youtube)(?:.be\/|.com\/watch\?v=)([^&\n]+)");
         public VideoModel(string url)
         {
             Url = url;
             var youtube = YouTube.Default;
-            Video = youtube.GetVideo(Url);
+            List<YouTubeVideo> list = new List<YouTubeVideo>(youtube.GetAllVideos(Url));
+            foreach (var item in list)
+            {
+                if (item.AdaptiveKind == AdaptiveKind.Audio)
+                {
+                    Video = item;
+                    break;
+                }
+            }
         }
         public YouTubeVideo Video { get; set; }
         public string Url { get; set; }

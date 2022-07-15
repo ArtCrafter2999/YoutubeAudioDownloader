@@ -19,8 +19,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Command;
-using MediaToolkit;
-using MediaToolkit.Model;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace YoutubeAudioDownloader
@@ -34,20 +32,7 @@ namespace YoutubeAudioDownloader
         {
             var Video = new VideoModel(video.Url);
             var source = @SaveToFolder + "\\";
-            //new Stream().
-            File.WriteAllBytes(source + Video.Video.FullName, Video.Video.GetBytes());
-            ProgressValue++;
-            var inputFile = new MediaFile { Filename = source + Video.Video.FullName };
-            var outputFile = new MediaFile { Filename = source + $"{InvalidSym.Replace(Video.Video.Title, "")}.mp3" };
-
-            using (var engine = new Engine())
-            {
-                engine.GetMetadata(inputFile);
-                ProgressValue++;
-                engine.Convert(inputFile, outputFile);
-                ProgressValue++;
-            }
-            File.Delete(source + Video.Video.FullName);
+            File.WriteAllBytes(source + Video.Video.FullName+".mp3", Video.Video.GetBytes());
             ProgressValue++;
         }
         public static Regex InvalidSym = new Regex("[\\\\\\/\\:\\*\\?\\\"\\<\\>\\|]");
@@ -74,7 +59,7 @@ namespace YoutubeAudioDownloader
             {
                 var dialog = new CommonOpenFileDialog();
                 dialog.IsFolderPicker = true;
-                Progress.Maximum = Videos.Count * 4 + 1;
+                Progress.Maximum = Videos.Count + 1;
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     Folder = dialog.FileName;
